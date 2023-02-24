@@ -9,7 +9,9 @@
 <div th:each="guitar:${guitars}">
     <a th:text="${guitar.getName()}" th:href = "@{/guitarsShop/{id}(id =${guitar.getId()})}" >user</a>
 </div>
-
+<br>
+<hr/>
+<a href="/guitarsShop/new">Create new guitar</a>
 
 </body>
 </html>

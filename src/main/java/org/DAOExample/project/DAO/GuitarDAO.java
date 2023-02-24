@@ -32,4 +32,13 @@ public class GuitarDAO {
         guitars.add(guitar);
 
     }
+
+    public void update(int id, Guitar updatedGuitar) {
+        Guitar guitarToBeUpdated = show(id);
+        guitarToBeUpdated.setName(updatedGuitar.getName());
+    }
+
+    public void delete(int id) {
+        guitars.removeIf(g->g.getId()==id);
+    }
 }

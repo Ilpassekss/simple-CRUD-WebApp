@@ -41,4 +41,23 @@ public class GuitarController {
         guitarDAO.save(guitar);
         return "redirect:/guitarsShop";
     }
+
+    //guitar edit method
+    @GetMapping("/{id}/editPage")
+    public String edit(Model model, @PathVariable("id") int id){
+        model.addAttribute("guitar", guitarDAO.show(id));
+        return "guitars/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("guitar") Guitar guitar, @PathVariable("id")int id ){
+        guitarDAO.update(id , guitar);
+        return "redirect:/guitarsShop";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteGuitar(@PathVariable("id")int id){
+        guitarDAO.delete(id);
+        return "redirect:/guitarsShop";
+    }
 }
