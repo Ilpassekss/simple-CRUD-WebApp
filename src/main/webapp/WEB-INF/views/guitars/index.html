@@ -7,7 +7,7 @@
 <body>
 
 <div th:each="guitar:${guitars}">
-    <a th:text="${guitar.getName()}" th:href = "@{/guitarsShop/{id}(id =${guitar.getId()})}" >user</a>
+    <a th:text="${guitar.getName()+','+guitar.getAge()}" th:href = "@{/guitarsShop/{id}(id =${guitar.getId()})}" >user</a>
 </div>
 <br>
 <hr/>

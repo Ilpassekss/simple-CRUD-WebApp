@@ -6,7 +6,10 @@ import org.DAOExample.project.models.Guitar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/guitarsShop")
@@ -35,7 +38,9 @@ public class GuitarController {
         return "guitars/new";
     }
     @PostMapping()
-    public String createGuitar(@ModelAttribute Guitar guitar){
+    public String createGuitar(@ModelAttribute("guitar") @Valid Guitar guitar, BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return "guitars/new";
         guitarDAO.save(guitar);
         return "redirect:/guitarsShop";
     }
@@ -48,7 +53,11 @@ public class GuitarController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("guitar") Guitar guitar, @PathVariable("id")int id ){
+    public String update(@ModelAttribute("guitar") @Valid Guitar guitar, BindingResult bindingResult, @PathVariable("id")int id ){
+        if(bindingResult.hasErrors()){
+            System.out.println("err");return "guitars/edit";
+            }
+
         guitarDAO.update(id , guitar);
         return "redirect:/guitarsShop";
     }

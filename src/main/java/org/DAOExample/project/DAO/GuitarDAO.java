@@ -12,10 +12,10 @@ public class GuitarDAO {
     private int GUITARS_COUNT ;
     {
         guitars = new ArrayList<>();
-        guitars.add(new Guitar(++GUITARS_COUNT, "Gibson LesPaul"));
-        guitars.add(new Guitar(++GUITARS_COUNT, "Fender Stratocaster"));
-        guitars.add(new Guitar(++GUITARS_COUNT, "Gibson SG"));
-        guitars.add(new Guitar(++GUITARS_COUNT, "Gibson Explorer"));
+        guitars.add(new Guitar(++GUITARS_COUNT, "Gibson LesPaul", 1, "gibson@gmail.com"));
+        guitars.add(new Guitar(++GUITARS_COUNT, "Fender Stratocaster", 40, "fender@mail.com"));
+        guitars.add(new Guitar(++GUITARS_COUNT, "Gibson SG", 5, "gibson@gmail.com"));
+        guitars.add(new Guitar(++GUITARS_COUNT, "Gibson Explorer", 2, "gibson@gmail.com"));
     }
 
     public List<Guitar> index(){
@@ -36,6 +36,8 @@ public class GuitarDAO {
     public void update(int id, Guitar updatedGuitar) {
         Guitar guitarToBeUpdated = show(id);
         guitarToBeUpdated.setName(updatedGuitar.getName());
+        guitarToBeUpdated.setAge(updatedGuitar.getAge());
+        guitarToBeUpdated.setDeveloperEmail(updatedGuitar.getDeveloperEmail());
     }
 
     public void delete(int id) {
