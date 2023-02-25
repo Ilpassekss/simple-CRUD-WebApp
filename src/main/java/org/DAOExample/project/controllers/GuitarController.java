@@ -24,7 +24,6 @@ public class GuitarController {
         model.addAttribute("guitars", guitarDAO.index());
         return "guitars/index";
     }
-
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model){
         model.addAttribute("guitar", guitarDAO.show(id));
@@ -35,7 +34,6 @@ public class GuitarController {
         model.addAttribute("guitar", new Guitar());
         return "guitars/new";
     }
-
     @PostMapping()
     public String createGuitar(@ModelAttribute Guitar guitar){
         guitarDAO.save(guitar);
@@ -55,6 +53,7 @@ public class GuitarController {
         return "redirect:/guitarsShop";
     }
 
+    //delete request
     @DeleteMapping("/{id}")
     public String deleteGuitar(@PathVariable("id")int id){
         guitarDAO.delete(id);

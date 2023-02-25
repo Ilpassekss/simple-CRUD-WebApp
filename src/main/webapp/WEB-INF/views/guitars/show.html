@@ -5,7 +5,7 @@
     <title>Guitar</title>
 </head>
 <body>
-<span th:text="${guitar.getName()}">Name</span>
+<span th:text="${guitar.getName()}">Name</span><br>
 <span th:text="${guitar.getId()}"></span>
 <a th:href="@{/guitarsShop/{id}/editPage(id=${guitar.getId()})}"> Edit </a>
 <form th:method="DELETE" th:action="@{/guitarsShop/{id}(id=${guitar.getId()})}">
