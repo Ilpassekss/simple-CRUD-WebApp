@@ -33,8 +33,6 @@ public class GuitarDAO {
         }
     }
 
-
-
     public List<Guitar> index(){
 
        List<Guitar> guitarList = new ArrayList<>();
@@ -56,7 +54,7 @@ public class GuitarDAO {
                 guitar.setAge(resultSet.getInt("age"));
                 guitar.setDeveloperEmail(resultSet.getString("developer_mail"));
 
-                GUITARS_COUNT = resultSet.getInt("id");
+                GUITARS_COUNT ++;
 
                 guitarList.add(guitar);
             }
@@ -67,26 +65,48 @@ public class GuitarDAO {
         return guitarList;
     }
 
-    public Guitar show(int id){
-        //return guitars.stream().filter(guitar->guitar.getId() == id ).findAny().orElse(null);
-        return null;
+    public Guitar show(int id) {
+
+        Guitar guitar = null;
+        try {
+            PreparedStatement preparedStatement= connection.prepareStatement("SELECT * from guitar where id=?");
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+
+            guitar = new Guitar();
+
+            guitar.setId(resultSet.getInt("id"));
+            guitar.setName(resultSet.getString("name"));
+            guitar.setAge(resultSet.getInt("age"));
+            guitar.setDeveloperEmail(resultSet.getString("developer_mail"));
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return guitar;
     }
 
-
     public void save(Guitar guitar) {
-       // guitar.setId(++GUITARS_COUNT);
-       // guitars.add(guitar);
 
         try {
-
-
-            Statement statement = connection.createStatement();
             int id = ++GUITARS_COUNT;
 
-            String SQL = "insert into Guitar values("+id+",'"+guitar.getName()+"',"+guitar.getAge()+",'"
-                    +guitar.getDeveloperEmail()+"')";
+            //this way excludes the possibility of changing the table through the html form also this way faster
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("INSERT INTO guitar values (id, ? , ?, ?)");//i have to fix this problem with id
+
+            preparedStatement.setString(1, guitar.getName());
+            preparedStatement.setInt(2, guitar.getAge());
+            preparedStatement.setString(3, guitar.getDeveloperEmail());
+
+
             //add data to database
-            statement.executeUpdate(SQL);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -94,13 +114,29 @@ public class GuitarDAO {
     }
 
     public void update(int id, Guitar updatedGuitar) {
-        Guitar guitarToBeUpdated = show(id);
-        guitarToBeUpdated.setName(updatedGuitar.getName());
-        guitarToBeUpdated.setAge(updatedGuitar.getAge());
-        guitarToBeUpdated.setDeveloperEmail(updatedGuitar.getDeveloperEmail());
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("update guitar set name = ? , age =? , " +
+                    "developer_mail = ? where id=?");
+
+            preparedStatement.setString(1, updatedGuitar.getName());
+            preparedStatement.setInt(2, updatedGuitar.getAge());
+            preparedStatement.setString(3, updatedGuitar.getDeveloperEmail());
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(int id) {
-        guitars.removeIf(g->g.getId()==id);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from guitar where id=?");
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
